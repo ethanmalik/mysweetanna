@@ -195,7 +195,7 @@
       star.style.animationDelay = Math.random() * 3 + 's';
       starsContainer.appendChild(star);
     }
-
+    
     const petalsContainer = document.getElementById('petals');
     const petalEmojis = ['🌸','🌼','🌷','💮','🌺'];
     for (let i = 0; i < 50; i++) {
@@ -312,6 +312,14 @@ Ethan`;
         alert('Finish the quiz first to unlock the gift, ok sayang? 💝');
       }
     }
+
+            // Trigger audio setelah tap pertama
+        document.body.addEventListener('click', function playMusicOnce() {
+            document.getElementById("bgm").play();
+            document.body.removeEventListener('click', playMusicOnce);
+        });
+        
   </script>
+  
 </body>
 </html>
