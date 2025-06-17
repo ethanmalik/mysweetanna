@@ -6,7 +6,6 @@
   <title>To My Dear Anna 💌</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* (Tidak ada perubahan pada CSS, jadi bagian ini tetap sama persis) */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: url('https://s14.gifyu.com/images/bHzJX.jpg') no-repeat center center fixed;
@@ -153,15 +152,39 @@
     .gift-popup a:hover {
       background: #357ABD;
     }
+    #musicHint {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #4a90e2;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    #manualPlayBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
   <div class="overlay"></div>
   <div class="stars" id="stars"></div>
   <div class="petals" id="petals"></div>
-    <audio id="bgm" preload="auto" loop>
-  <source src="https://audio.jukehost.co.uk/wbNNVFL10XOnygjNFPbR0BEJhAjW6jqb" type="audio/mpeg">
-</audio>
+  <audio id="bgm" preload="auto" loop>
+    <source src="https://audio.jukehost.co.uk/wbNNVFL10XOnygjNFPbR0BEJhAjW6jqb" type="audio/mpeg">
+  </audio>
 
   <div class="container">
     <h1>To Anna, My Beautiful Gardener 🌱</h1>
@@ -172,6 +195,7 @@
       <span class="emoji">☀️</span>
     </div>
     <p id="typingText" class="typing"></p>
+    <div id="musicHint">Tap anywhere to play background music 🎵</div>
     <a href="http://miniplay.com/game/grow-a-garden" target="_blank" class="game-button">🌼 The game that's on roblox, isnt'it? 🌼</a>
     <button class="quiz-button" onclick="startQuiz()">🌿 Mini Quiz HAHAHAHA 🌿</button>
     <div id="quizBox">
@@ -185,7 +209,11 @@
       <a href="https://open.spotify.com/playlist/1VC3woSPh6fF4Dhf2rHvHT?si=IYmSX00fTaGBLgfyv1plwQ" target="_blank">Open the Surprise 🎀</a>
     </div>
   </div>
+  
+  <button id="manualPlayBtn">🔊 Play Music</button>
+
   <script>
+    // Create stars
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 100; i++) {
       const star = document.createElement('div');
@@ -196,6 +224,7 @@
       starsContainer.appendChild(star);
     }
     
+    // Create petals
     const petalsContainer = document.getElementById('petals');
     const petalEmojis = ['🌸','🌼','🌷','💮','🌺'];
     for (let i = 0; i < 50; i++) {
@@ -207,17 +236,17 @@
       petalsContainer.appendChild(petal);
     }
 
+    // Typing effect
     const message = `Hi Anna, my little sweet favorite gardener🌼,
 
-You've been filling my days with this gentle kind of happiness I didn’t even know I needed. Every moment with you even just chatting about the tiniest things makes everything feel lighter. I smile more now.
-You got me curious about things I never thought I’d try like Roblox 😂 And now, I kinda dream of the day we can play together, especially the gardening game. 
+You've been filling my days with this gentle kind of happiness I didn't even know I needed. Every moment with you even just chatting about the tiniest things makes everything feel lighter. I smile more now.
+You got me curious about things I never thought I'd try like Roblox 😂 And now, I kinda dream of the day we can play together, especially the gardening game. 
 I love the way you call me "Mas Ethan" it does something to my heart every single time. It makes me feel seen, special, and truly yours.
 Thank you for being that joy in my day, and the sunshine that keeps my little world blooming.
 I love you, Anna. More than I ever expected to, and more than I know how to say.
 
 Always yours,
 Ethan`;
-
 
     let i = 0;
     const speed = 25;
@@ -230,19 +259,52 @@ Ethan`;
       }
     }
     window.onload = typeText;
-            let audioStarted = false;
-        function startMusicOnInteraction() {
-        if (!audioStarted) {
-            const audio = document.getElementById('bgm');
-            audio.play().catch(err => console.log('Autoplay blocked:', err));
-            audioStarted = true;
-            document.removeEventListener('click', startMusicOnInteraction);
-            document.removeEventListener('touchstart', startMusicOnInteraction);
-        }
-        }
-        document.addEventListener('click', startMusicOnInteraction);
-        document.addEventListener('touchstart', startMusicOnInteraction);
 
+    // Audio handling with improved Android compatibility
+    let audioStarted = false;
+    const audio = document.getElementById('bgm');
+    audio.volume = 0.5; // Set lower default volume
+    const manualPlayBtn = document.getElementById('manualPlayBtn');
+    const musicHint = document.getElementById('musicHint');
+
+    function startMusic() {
+      if (!audioStarted) {
+        audio.play().then(() => {
+          audioStarted = true;
+          musicHint.style.display = 'none';
+          manualPlayBtn.style.display = 'none';
+          // Remove all event listeners after successful play
+          document.removeEventListener('click', startMusic);
+          document.removeEventListener('touchstart', startMusic);
+          window.removeEventListener('scroll', startMusic);
+        }).catch(err => {
+          console.log('Autoplay blocked:', err);
+          // Show manual play button if autoplay fails
+          manualPlayBtn.style.display = 'block';
+        });
+      }
+    }
+
+    // Manual play button handler
+    manualPlayBtn.addEventListener('click', function() {
+      audio.play().then(() => {
+        audioStarted = true;
+        musicHint.style.display = 'none';
+        manualPlayBtn.style.display = 'none';
+      });
+    });
+
+    // Multiple ways to start music
+    document.addEventListener('click', startMusic, {once: true});
+    document.addEventListener('touchstart', startMusic, {once: true});
+    window.addEventListener('scroll', startMusic, {once: true});
+
+    // Try to play on page load (might work on some devices)
+    window.addEventListener('load', function() {
+      audio.play().catch(e => console.log('Autoplay on load blocked'));
+    });
+
+    // Quiz functionality
     const quizBox = document.getElementById('quizBox');
     const questionText = document.getElementById('question');
     const optionsBox = document.getElementById('options');
@@ -312,14 +374,6 @@ Ethan`;
         alert('Finish the quiz first to unlock the gift, ok sayang? 💝');
       }
     }
-
-            // Trigger audio setelah tap pertama
-        document.body.addEventListener('click', function playMusicOnce() {
-            document.getElementById("bgm").play();
-            document.body.removeEventListener('click', playMusicOnce);
-        });
-        
   </script>
-  
 </body>
 </html>
