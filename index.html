@@ -1,317 +1,1495 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>To My Dear Anna 💌</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Love Book for Louisa</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
   <style>
-    /* (Tidak ada perubahan pada CSS, jadi bagian ini tetap sama persis) */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      background: url('https://s14.gifyu.com/images/bHzJX.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Quicksand', sans-serif;
-      color: #333;
-      height: 100vh;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f7d79d 0%, #fe81b5 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #5a2a41;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    
+    /* Romantic Background Elements */
+    .love-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
       overflow: hidden;
     }
-    .overlay {
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(173, 216, 230, 0.9));
+    
+    .falling-love {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      color: rgba(214, 112, 147, 0.7);
+      font-size: 24px;
+      animation: fall 8s linear infinite;
+      opacity: 0;
+      text-shadow: 0 0 10px rgba(255, 204, 204, 0.8);
     }
-    .stars, .petals {
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) translateX(20px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Floating Hearts */
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff6b8b;
+      transform: rotate(45deg);
+      animation: float 15s infinite linear;
+      opacity: 0.6;
+    }
+    
+    .floating-heart:before,
+    .floating-heart:after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background-color: #ff6b8b;
+      border-radius: 50%;
+      position: absolute;
+    }
+    
+    .floating-heart:before {
+      top: -10px;
+      left: 0;
+    }
+    
+    .floating-heart:after {
+      top: 0;
+      left: -10px;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: rotate(45deg) translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: rotate(45deg) translateY(-100vh) translateX(50px);
+        opacity: 0;
+      }
+    }
+    
+    /* Book Container */
+    .book-container {
+      width: 90%;
+      max-width: 900px;
+      height: 600px;
+      position: relative;
+      perspective: 2000px;
+      margin: 50px 0;
+      transform-style: preserve-3d;
+    }
+    
+    /* Book Spine Effect */
+    .book-spine {
+      position: absolute;
+      left: -20px;
+      top: 0;
+      height: 100%;
+      width: 40px;
+      background: linear-gradient(to right, #b3577a, #d67093);
+      transform: rotateY(90deg) translateZ(-20px);
+      border-radius: 5px 0 0 5px;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    }
+    
+    /* Individual Pages */
+    .page {
       position: absolute;
       width: 100%;
       height: 100%;
+      background: rgba(255, 249, 251, 0.9);
+      border-radius: 5px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      display: none;
+      transform-style: preserve-3d;
+      transition: transform 1s ease-in-out;
+      background-image: url('https://s14.gifyu.com/images/bHTr1.jpg');
+      background-size: cover;
+      background-position: center;
+      overflow-y: auto;
+      transform-origin: left center;
+      backface-visibility: hidden;
+    }
+    
+    .page.active {
+      display: block;
+      z-index: 1;
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    .page.flipping {
+      display: block;
+      z-index: 2;
+      transform: rotateY(-180deg);
+      animation: none;
+    }
+    
+    .page.flipping-out {
+      display: block;
+      z-index: 2;
+      transform: rotateY(0deg);
+      animation: none;
+    }
+    
+    .page-content {
+      background-color: transparent;
+      backdrop-filter: blur(5px);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Page Decorations */
+    .page-decoration {
+      position: absolute;
+      opacity: 0.15;
       z-index: 1;
       pointer-events: none;
     }
-    .star {
+    
+    .page-decoration.heart {
+      font-size: 120px;
+      color: #d67093;
+    }
+    
+    .page-decoration.flower {
+      font-size: 80px;
+      color: #c7798a;
+    }
+    
+    /* Page Content Styles */
+    .page h2 {
+      font-family: 'Dancing Script', cursive;
+      color: #b3577a;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .page h2:after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(to right, #d67093, transparent);
+      margin: 15px auto;
+    }
+    
+    .page p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #5a2a41;
+    }
+    
+    /* Interactive List Items */
+    ul.love-list {
+      list-style: none;
+      margin: 0 auto;
+      max-width: 80%;
+    }
+    
+    ul.love-list li {
+      padding: 15px;
+      margin: 15px 0;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: all 0.3s;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #5a2a41;
+      border: 1px solid #e8c3ca;
+    }
+    
+    ul.love-list li:hover {
+      transform: translateX(10px);
+      background: rgba(214, 112, 147, 0.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      border-color: #d67093;
+    }
+    
+    ul.love-list li:after {
+      content: '→';
       position: absolute;
-      width: 2px;
-      height: 2px;
+      right: 15px;
+      opacity: 0;
+      transition: all 0.3s;
+      color: #b3577a;
+    }
+    
+    ul.love-list li:hover:after {
+      opacity: 1;
+      right: 10px;
+    }
+    
+    /* Photo Gallery */
+    .memory-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px auto;
+      max-width: 90%;
+    }
+    
+    .memory-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      aspect-ratio: 1/1;
+      transition: all 0.3s;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #e8c3ca;
+    }
+    
+    .memory-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      border-color: #d67093;
+    }
+    
+    .memory-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    
+    .memory-item:hover img {
+      transform: scale(1.1);
+    }
+    
+    /* Polaroid Effect for Photos */
+    .polaroid {
       background: white;
-      animation: twinkle 2s infinite ease-in-out;
+      padding: 15px 15px 40px 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      transform: rotate(2deg);
+      transition: all 0.3s;
+    }
+    
+    .polaroid:hover {
+      transform: rotate(0deg) scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    /* Zoomed Photo Modal */
+    .photo-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .photo-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .zoomed-photo {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(214, 112, 147, 0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+    
+    .photo-modal.active .zoomed-photo {
+      transform: scale(1);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .close-modal:hover {
+      transform: scale(1.2);
+      color: #d67093;
+    }
+    
+    /* Detail Pages */
+    .detail-page {
+      text-align: center;
+    }
+    
+    .detail-content {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      margin: 20px auto;
+      max-width: 80%;
+      position: relative;
+      border: 1px solid #e8c3ca;
+      transform-style: preserve-3d;
+    }
+    
+    .detail-content:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background: linear-gradient(to right, #d67093, #c7798a);
+    }
+    
+    .back-btn {
+      display: inline-block;
+      padding: 10px 25px;
+      background: #d67093;
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-top: 20px;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .back-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: 0.5s;
+    }
+    
+    .back-btn:hover:before {
+      left: 100%;
+    }
+    
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(214, 112, 147, 0.4);
+      background: #b3577a;
+    }
+    
+    /* Final Page */
+    .proposal-page {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+    
+    .proposal-page h2 {
+      font-size: 3.5rem;
+      margin-bottom: 30px;
+      color: #b3577a;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .proposal-text {
+      font-size: 1.3rem;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      color: #5a2a41;
+    }
+    
+    .accept-btn {
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(45deg, #b3577a, #d67093);
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: bold;
+      box-shadow: 0 5px 20px rgba(179, 87, 122, 0.4);
+      transition: all 0.3s;
+      margin-top: 20px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .accept-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #d67093, #b3577a);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .accept-btn:hover:before {
+      opacity: 1;
+    }
+    
+    .accept-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(179, 87, 122, 0.6);
+    }
+    
+    /* Navigation Controls */
+    .page-controls {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 100;
+    }
+    
+    .page-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #d67093;
+      color: #b3577a;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .page-btn:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #d67093;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.3s;
+      z-index: -1;
+    }
+    
+    .page-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      color: white;
+      border-color: #b3577a;
+    }
+    
+    .page-btn:hover:after {
+      transform: scale(1);
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      background: white;
+      color: #ccc;
+      border-color: #ccc;
+    }
+    
+    .page-btn:disabled:after {
+      display: none;
+    }
+    
+    /* Music Player */
+    .music-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 50px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      border: 1px solid #e8c3ca;
+      transition: all 0.3s;
+    }
+    
+    .music-control:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .music-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #b3577a, #d67093);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s;
+    }
+    
+    .music-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(179, 87, 122, 0.6);
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: rgba(214, 112, 147, 0.2);
+      z-index: 100;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #b3577a, #d67093);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    /* Confetti Effect */
+    .confetti {
+      position: fixed;
+      width: 15px;
+      height: 15px;
+      background-color: #b3577a;
+      opacity: 0;
+      z-index: 1000;
+      animation: confettiFall 5s ease-in-out;
       border-radius: 50%;
     }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
+    
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
     }
-    .petal {
+    
+    /* Sparkle Effect */
+    .sparkle {
       position: absolute;
-      font-size: 24px;
-      animation: petalFadeIn 8s linear infinite;
+      width: 5px;
+      height: 5px;
+      background-color: white;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkle 1s ease-out;
       opacity: 0;
     }
-    @keyframes petalFadeIn {
-      0% { transform: translateY(-10%); opacity: 0; }
-      10% { opacity: 1; }
-      100% { transform: translateY(110vh); opacity: 0; }
+    
+    @keyframes sparkle {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
     }
-    .container {
-      position: relative;
-      z-index: 2;
-      margin: 60px auto;
-      max-width: 700px;
-      text-align: center;
-      animation: fadeIn 2s ease;
-      background: rgba(162, 217, 251, 0.85);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    
+    /* Page Transitions */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    h1 {
-      font-size: 28px;
-      color: #4a90e2;
-      animation: slideIn 1.5s ease;
+    
+    @keyframes flipPage {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(-180deg); }
     }
-    .emoji {
-      font-size: 26px;
-      margin: 15px 5px;
-      animation: blink 2s infinite ease-in-out;
+    
+    @keyframes flipPageOut {
+      0% { transform: rotateY(-180deg); }
+      100% { transform: rotateY(0deg); }
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    
+    /* Book Opening Animation */
+    @keyframes bookOpen {
+      0% { transform: scale(0.8) rotateX(10deg); opacity: 0; }
+      100% { transform: scale(1) rotateX(0); opacity: 1; }
     }
-    .typing {
-      font-size: 17px;
-      line-height: 1.8;
-      white-space: pre-line;
-      text-align: left;
-      max-height: 500px;
-      padding-top: 20px;
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .book-container {
+        height: 500px;
+        animation: none;
+      }
+      
+      .page {
+        padding: 25px;
+      }
+      
+      .page h2 {
+        font-size: 2.2rem;
+      }
+      
+      ul.love-list {
+        max-width: 95%;
+      }
+      
+      .memory-gallery {
+        grid-template-columns: 1fr;
+      }
+      
+      .detail-content {
+        max-width: 95%;
+        padding: 20px;
+      }
+      
+      .page-controls {
+        bottom: 20px;
+      }
+      
+      .page-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      .proposal-page h2 {
+        font-size: 2.5rem;
+      }
+      
+      .proposal-text {
+        font-size: 1.1rem;
+      }
+      
+      .accept-btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+      }
     }
-    .game-button, .quiz-button, .gift-button {
-      display: inline-block;
-      margin: 20px 10px 0;
-      background: #4a90e2;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s ease;
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
     }
-    .game-button:hover, .quiz-button:hover, .gift-button:hover {
-      background: #357ABD;
-    }
-    #quizBox {
-      display: none;
-      margin-top: 30px;
-      background: #f0faff;
-      padding: 20px;
-      border-radius: 12px;
-    }
-    .question {
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    .option {
-      display: block;
-      margin: 8px 0;
-      padding: 10px;
-      background: #fff;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 1px solid #ddd;
-      transition: background 0.3s;
-    }
-    .option:hover {
-      background: #e1f5ff;
-    }
-    .result {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    .gift-popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      z-index: 10;
-    }
-    .gift-popup a {
-      display: inline-block;
-      margin-top: 10px;
-      background: #4a90e2;
-      color: white;
-      padding: 10px 18px;
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(214, 112, 147, 0.1);
       border-radius: 10px;
-      text-decoration: none;
     }
-    .gift-popup a:hover {
-      background: #357ABD;
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(#b3577a, #d67093);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(#d67093, #b3577a);
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <div class="stars" id="stars"></div>
-  <div class="petals" id="petals"></div>
- <audio id="bgm" loop>
-  <source src="https://audio.jukehost.co.uk/wbNNVFL10XOnygjNFPbR0BEJhAjW6jqb" type="audio/mpeg">
-</audio>
-
-  <div class="container">
-    <h1>To Anna, My Beautiful Gardener 🌱</h1>
-    <div>
-      <span class="emoji">🐱</span>
-      <span class="emoji">🌷</span>
-      <span class="emoji">🪴</span>
-      <span class="emoji">☀️</span>
+  <!-- Falling Love Background -->
+  <div class="love-background" id="loveBackground"></div>
+  
+  <!-- Floating Hearts Background -->
+  <div id="floatingHearts"></div>
+  
+  <!-- Music Control -->
+  <div class="music-control">
+    <span>Romantic Music</span>
+    <button class="music-btn" id="musicToggle">
+      <i class="fas fa-music"></i>
+    </button>
+    <button class="music-btn" id="nextTrack">
+      <i class="fas fa-forward"></i>
+    </button>
+  </div>
+  
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  
+  <!-- Photo Modal -->
+  <div class="photo-modal" id="photoModal">
+    <span class="close-modal" id="closeModal">&times;</span>
+    <img class="zoomed-photo" id="zoomedPhoto" src="" alt="Zoomed Photo">
+  </div>
+  
+  <!-- Book Container -->
+  <div class="book-container" id="bookContainer">
+    <div class="book-spine"></div>
+    
+    <!-- Page 1 - Cover -->
+    <div class="page active" id="page1">
+      <div class="page-decoration heart" style="top: 20%; left: 10%;">❤️</div>
+      <div class="page-decoration flower" style="bottom: 15%; right: 10%;">🌸</div>
+      <div class="page-content">
+        <h2 style="font-size: 4rem; margin-bottom: 20px;">For Louisa</h2>
+        <p style="text-align: center; font-size: 1.5rem; margin-bottom: 30px;">
+          Everything about you<br>
+          From Ethan to You
+        </p>
+        <div style="text-align: center; margin-top: 40px;">
+          <i class="fas fa-arrow-down" style="font-size: 2.5rem; color: #f0505e; animation: bounce 2s infinite;"></i>
+          <p style="margin-top: 15px; font-size: 1.1rem;">Click to begin our story</p>
+        </div>
+      </div>
     </div>
-    <p id="typingText" class="typing"></p>
-    <a href="http://miniplay.com/game/grow-a-garden" target="_blank" class="game-button">🌼 The game that's on roblox, isnt'it? 🌼</a>
-    <button class="quiz-button" onclick="startQuiz()">🌿 Mini Quiz HAHAHAHA 🌿</button>
-    <div id="quizBox">
-      <div class="question" id="question"></div>
-      <div id="options"></div>
-      <div class="result" id="result"></div>
+    
+    <!-- Page 2 - Things You Love -->
+    <div class="page" id="page2">
+      <div class="page-decoration heart" style="top: 30%; right: 5%; transform: rotate(30deg);">❤️</div>
+      <div class="page-content">
+        <h2>Things You Love From What I remember</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Click them to see talking about each of it</p>
+        <ul class="love-list">
+          <li onclick="showDetailPage('love1')">Your mom</li>
+          <li onclick="showDetailPage('love2')">Ethan Malik</li>
+          <li onclick="showDetailPage('love3')">Colo</li>
+          <li onclick="showDetailPage('love4')">Man with glasses</li>
+          <li onclick="showDetailPage('love5')">Jeno</li>
+          <li onclick="showDetailPage('love6')">Fiction Books</li>
+          <li onclick="showDetailPage('love7')">Butterscotch sea latte</li>
+          <li onclick="showDetailPage('love8')">Jajanan</li>
+          <li onclick="showDetailPage('love9')">Sexy brain men</li>
+          <li onclick="showDetailPage('love10')">Being scold</li>
+        </ul>
+      </div>
     </div>
-    <button class="gift-button" onclick="showGift()">🎁 Special for you 🎁</button>
-    <div class="gift-popup" id="giftPopup">
-      <p>Here's a little gift for you, Anna 💝</p>
-      <a href="https://open.spotify.com/playlist/1VC3woSPh6fF4Dhf2rHvHT?si=IYmSX00fTaGBLgfyv1plwQ" target="_blank">Open the Surprise 🎀</a>
+    
+    <!-- Page 3 - Things You Dislike -->
+    <div class="page" id="page3">
+      <div class="page-decoration heart" style="bottom: 20%; left: 8%; transform: rotate(-15deg);">❤️</div>
+      <div class="page-content">
+        <h2>Things You Dislike, From What I observe</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Click them to see me yapping hahaha</p>
+        <ul class="love-list">
+          <li onclick="showDetailPage('hate1')">Being left by mom</li>
+          <li onclick="showDetailPage('hate2')">Being left by Colo's member</li>
+          <li onclick="showDetailPage('hate3')">Porridge</li>
+          <li onclick="showDetailPage('hate4')">00.00 I Love You thingy on your channel</li>
+          <li onclick="showDetailPage('hate5')">Eat</li>
+          <li onclick="showDetailPage('hate6')">Being mature</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Page 4 - Why I Love You -->
+    <div class="page" id="page4">
+      <div class="page-decoration heart" style="top: 15%; right: 10%;">❤️</div>
+      <div class="page-decoration heart" style="bottom: 25%; left: 10%; transform: rotate(20deg);">❤️</div>
+      <div class="page-content">
+        <h2>Things that make me fall for you</h2>
+        <p style="text-align: center; margin-bottom: 20px;">Click to read more about each reason</p>
+        <ul class="love-list">
+          <li onclick="showDetailPage('reason1')">You are you</li>
+          <li onclick="showDetailPage('reason2')">Your attention and understanding</li>
+          <li onclick="showDetailPage('reason3')">You always make me comfortable</li>
+          <li onclick="showDetailPage('reason4')">Sweetest person ever</li>
+          <li onclick="showDetailPage('reason5')">Always listens without judgment</li>
+          <li onclick="showDetailPage('reason6')">Cares about your surroundings</li>
+          <li onclick="showDetailPage('reason7')">Always brings joy to everyone</li>
+          <li onclick="showDetailPage('reason8')">Makes me blush easily</li>
+          <li onclick="showDetailPage('reason9')">Dedicated person</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Page 5 - Photo Gallery -->
+    <div class="page" id="page5">
+      <div class="page-decoration flower" style="top: 10%; left: 5%;">🌸</div>
+      <div class="page-decoration flower" style="bottom: 10%; right: 5%; transform: rotate(15deg);">🌸</div>
+      <div class="page-content">
+        <h2>Our Beautiful Memories</h2>
+        <div class="memory-gallery">
+          <div class="memory-item" onclick="zoomPhoto('https://s14.gifyu.com/images/bHTVg.jpg')">
+            <div class="polaroid">
+              <img src="https://s14.gifyu.com/images/bHTVg.jpg" alt="Our Memory 1">
+            </div>
+          </div>
+          <div class="memory-item" onclick="zoomPhoto('https://s14.gifyu.com/images/bHTZs.jpg')">
+            <div class="polaroid">
+              <img src="https://s14.gifyu.com/images/bHTZs.jpg" alt="Our Memory 2">
+            </div>
+          </div>
+          <div class="memory-item" onclick="zoomPhoto('https://s14.gifyu.com/images/bHTZN.jpg')">
+            <div class="polaroid">
+              <img src="https://s14.gifyu.com/images/bHTZN.jpg" alt="Our Memory 3">
+            </div>
+          </div>
+          <div class="memory-item" onclick="zoomPhoto('https://s14.gifyu.com/images/bHTZT.jpg')">
+            <div class="polaroid">
+              <img src="https://s14.gifyu.com/images/bHTZT.jpg" alt="Our Memory 4">
+            </div>
+          </div>
+        </div>
+        <p style="text-align: center; margin-top: 15px; font-style: italic;">
+          "Every moment with you becomes a precious memory I'll cherish forever"
+        </p>
+      </div>
+    </div>
+    
+    <!-- Page 6 - Love Letter -->
+    <div class="page" id="page6">
+      <div class="page-decoration heart" style="top: 20%; right: 5%; transform: rotate(45deg);">❤️</div>
+      <div class="page-decoration heart" style="bottom: 15%; left: 5%;">❤️</div>
+      <div class="page-content">
+        <h2>My Love Letter</h2>
+        <div class="love-letter">
+          <p>My Dearest Louisa,</p>
+          <p>
+            From the moment we met, I remember that I ask for help, to check my website that I made for Shabelle.
+            You offer some helps, patiently helping me back then, and I'm so grateful for that. Your reaction was so cute hahaha
+          </p>
+          <p>
+           The very first time you ask me on my anonbot, I can kinda guess that is you, for real haha, it's just that I have this feelings that you'll be the one.
+           And after that, our story begin. I'm really grateful for your action back then, if you didn't do that we might still need a long time to know each other. 
+          </p>
+          <p>
+            We've come this far now, and having you always by my side feels like the greatest gift I've ever received. Every moment with you, even the quiet ones, always make me so grateful that having you as mine.
+            You never asked me to change, and yet, being with you makes me want to be the best version of myself. Because you deserve someone who gives you the kind of love that makes you feel loved, adored, give you the best you deserve. And I want to be that someone, every day, in every small way I can.
+          </p>
+          <p style="text-align: center; font-weight: bold; font-size: 1.4rem; margin: 30px 0;">
+            Will you continue being mine, Louisa Emily?
+          </p>
+          <p style="text-align: right;">
+            With all my love,<br>
+            <span style="font-family: 'Dancing Script', cursive; font-size: 1.5rem;">Ethan Malik</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Page 7 - Proposal -->
+    <div class="page" id="page7">
+      <div class="page-decoration heart" style="top: 15%; left: 10%; transform: rotate(-20deg);">❤️</div>
+      <div class="page-decoration heart" style="bottom: 20%; right: 10%;">❤️</div>
+      <div class="page-content proposal-page">
+        <h2>Will You Be Mine?</h2>
+        <p class="proposal-text">
+          Louisa Emily, you've captured my heart completely with your sweet love for mochi,<br>
+          your adorable grumpiness about age mentions, and that beautiful mind of yours.<br>
+          Will you continue this beautiful journey with me?
+        </p>
+        <button class="accept-btn" id="acceptProposal">
+          <i class="fas fa-heart"></i> Yes, I Accept! <i class="fas fa-heart"></i>
+        </button>
+        <div style="margin-top: 40px;">
+          <i class="fas fa-heart" style="color: #b3577a; font-size: 3rem; animation: pulse 1.5s infinite;"></i>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Detail Pages -->
+    <div class="page" id="detailPage">
+      <div class="page-content detail-page">
+        <h2 id="detailTitle">Detail</h2>
+        <div class="detail-content">
+          <p id="detailText">Loading details...</p>
+          <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+  
+  <!-- Page Navigation -->
+  <div class="page-controls">
+    <button class="page-btn" id="prevBtn" disabled>
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <button class="page-btn" id="nextBtn">
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+  
+  <!-- Audio Elements -->
+  <audio id="bgMusic" loop>
+    <source src="https://audio.jukehost.co.uk/Pdf1wNt4Wt4cRSbqtCYO4IDrBkUpGpRh" type="audio/mpeg">
+  </audio>
+  <audio id="pageSound">
+    <source src="https://audio.jukehost.co.uk/UxvuY3Qf5q5PSjwvMN4JG1ZWF3Bd70hp" type="audio/mpeg">
+  </audio>
+  <audio id="heartSound">
+    <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_3a742b7a7e.mp3?filename=heartbeat-02-107712.mp3" type="audio/mpeg">
+  </audio>
+  
   <script>
-    const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 100; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.animationDelay = Math.random() * 3 + 's';
-      starsContainer.appendChild(star);
-    }
+    // Initialize variables
+    let currentPage = 1;
+    const totalPages = 7;
+    const bgMusic = document.getElementById('bgMusic');
+    const pageSound = document.getElementById('pageSound');
+    const heartSound = document.getElementById('heartSound');
+    let previousPage = 1;
+    let isFlipping = false;
+    let navigationHistory = [];
+    let isMusicPlaying = false;
 
-    const petalsContainer = document.getElementById('petals');
-    const petalEmojis = ['🌸','🌼','🌷','💮','🌺'];
-    for (let i = 0; i < 50; i++) {
-      const petal = document.createElement('div');
-      petal.className = 'petal';
-      petal.innerText = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.animationDelay = Math.random() * 5 + 's';
-      petalsContainer.appendChild(petal);
-    }
-
-    const message = `Hi Anna, my little sweet favorite gardener🌼,
-
-You've been filling my days with this gentle kind of happiness I didn’t even know I needed. Every moment with you even just chatting about the tiniest things makes everything feel lighter. I smile more now.
-You got me curious about things I never thought I’d try like Roblox 😂 And now, I kinda dream of the day we can play together, especially the gardening game. 
-I love the way you call me "Mas Ethan" it does something to my heart every single time. It makes me feel seen, special, and truly yours.
-Thank you for being that joy in my day, and the sunshine that keeps my little world blooming.
-I love you, Anna. More than I ever expected to, and more than I know how to say.
-
-Always yours,
-Ethan`;
-
-
-    let i = 0;
-    const speed = 25;
-    function typeText() {
-      const textElement = document.getElementById('typingText');
-      if (i < message.length) {
-        textElement.textContent += message.charAt(i);
-        i++;
-        setTimeout(typeText, speed);
-      }
-    }
-    window.onload = typeText;
-            let audioStarted = false;
-        function startMusicOnInteraction() {
-        if (!audioStarted) {
-            const audio = document.getElementById('bgm');
-            audio.play().catch(err => console.log('Autoplay blocked:', err));
-            audioStarted = true;
-            document.removeEventListener('click', startMusicOnInteraction);
-            document.removeEventListener('touchstart', startMusicOnInteraction);
-        }
-        }
-        document.addEventListener('click', startMusicOnInteraction);
-        document.addEventListener('touchstart', startMusicOnInteraction);
-
-    const quizBox = document.getElementById('quizBox');
-    const questionText = document.getElementById('question');
-    const optionsBox = document.getElementById('options');
-    const resultBox = document.getElementById('result');
-    const quiz = [
-      {
-        q: "Which of these plants loves sunlight the most?",
-        options: ["Aloe Vera", "Lavender", "Fern", "Peace Lily"],
-        correct: 1
-      },
-      {
-        q: "What tool is best for digging small holes for planting seeds?",
-        options: ["Trowel", "Pruner", "Hoe", "Rake"],
-        correct: 0
-      },
-      {
-        q: "Which season is best for planting tulip bulbs?",
-        options: ["Spring", "Summer", "Fall", "Winter"],
-        correct: 2
-      }
+    // Music playlist
+    const musicPlaylist = [
+      'https://audio.jukehost.co.uk/Pdf1wNt4Wt4cRSbqtCYO4IDrBkUpGpRh',
+      'https://audio.jukehost.co.uk/aDZ3XR1KA0o0Z6MJh0KjbelWkH8nbmZS',
+      'https://audio.jukehost.co.uk/BEHJIeopSrHhW7r2N3rnkLjq5d0MF9qp'
     ];
-    let currentQuestion = 0;
-    let quizFinished = false;
-
-    function startQuiz() {
-      quizBox.style.display = 'block';
-      showQuestion();
+    let currentTrackIndex = 0;
+    
+    // Detail content database
+    const detailContents = {
+      // Things you love
+      'love1': {
+        title: 'Your Mom',
+        content: 'The way you love and care for your mom, its so cute, sayang. You love your mom so much. I admire the special bond you share with her. Mama comes first and then me, ok? I also love your mom cuz she gave birth to my favorite person ever'
+      },
+      'love2': {
+        title: 'Ethan Malik',
+        content: 'HAHAHA, Me comes the second ok? Im pretty sure that my place after your mom. You likes so much arent you? More than your Jeno? Right?'
+      },
+      'love3': {
+        title: 'Colo',
+        content: 'Your love for Colo shows your nurturing side, mother of the group I should say sayang. The way you care for others. It\'s what make you so special, sayang.'
+      },
+      'love4': {
+        title: 'Man with glasses',
+        content: 'You really went crazy whenever your favorite idol or actor wear glasses, well, must because you like smart man isnt it? Dasar hahaha.'
+      },
+      'love5': {
+        title: 'Jeno',
+        content: 'To be honest I dont want to put another man beside me here, but I want to respect your favorite sayang.'
+      },
+      'love6': {
+        title: 'Fiction Books',
+        content: 'You love books that easy-to-read, fiction books for your imaginative mind. I can picture you getting lost in stories, experiencing every emotion alongside the characters. Maybe one day we can read together, ok? Reading date sayang.'
+      },
+      'love7': {
+        title: 'Butterscotch Sea Latte',
+        content: 'You like coffee that kinda strong arent you? I\'d love to share coffee dates with you someday sayang.'
+      },
+      'love8': {
+        title: 'Jajanan',
+        content: 'Dimsum, wonton, cheesecake, and mochi. Esp dimsum mentai, the one that you really like sayang. You like them so much more than me arent you?.'
+      },
+      'love9': {
+        title: 'Sexy Brain Men',
+        content: 'Me. HAHAHAHA. No doubt ok? It should be me. I\'ll strive to keep stimulating that beautiful mind of yours so that you will like me more and more and more.'
+      },
+      'love10': {
+        title: 'Being scold',
+        content: 'HAHAHAHA, only by me ok? if others did that to you, I\'ll throw a mountain to their place.'
+      },
+      
+      // Things you dislike
+      'hate1': {
+        title: 'Being Left by Mom',
+        content: 'My cutie little lou doesnt like being separated with mom fr too long ya sayang. I want you to know I\'ll always be here to comfort you during any temporary separations.'
+      },
+      'hate2': {
+        title: 'Being Left by Colo\'s member',
+        content: 'Also one of the reason why I love you, cuz you care so much, to everyone around you sayang. You form strong bonds and feel things intensely, but I always here ok? With you.'
+      },
+      'hate3': {
+        title: 'Porridge',
+        content: 'Your dislike for porridge makes me chuckle hahaha - everyone has that one food they can\'t stand!'
+      },
+      'hate4': {
+        title: '00.00 I Love You thingy on your channel',
+        content: 'This specific pet peeve is so uniquely you! HAHAHA I always laugh whenever you being grumpy on your channel cuz you sent the I love you thing at 00.01'
+      },
+      'hate5': {
+        title: 'Eat',
+        content: 'Your dont really like to eat your meal, esp on daily life. But we working on it ok? 2 Meal adn 1 snacking .'
+      },
+      'hate6': {
+        title: 'Being Mature',
+        content: 'Your resistance to age mentions is adorable. That youthful spirit of yours is something I cherish. Don\'t worry - to me, you\'ll always be the vibrant, youthful Louisa regardless of numbers.'
+      },
+      
+      // Reasons I love you
+      'reason1': {
+        title: 'Just Being You',
+        content: 'Louisa Emily - the name itself makes me smile. There\'s no specific reason needed because your entire being is what I fell for. The way you exist in this world is enough to make my heart race.'
+      },
+      'reason2': {
+        title: 'Attention & Understanding',
+        content: 'You have this incredible ability to make people feel truly seen and understood, sayang. When I\'m with you, I feel like I\'m the only person in the world that matters. That makes me fall for you again and again.'
+      },
+      'reason3': {
+        title: 'Comfort You Provide',
+        content: 'With you, I can completely be myself. You create this safe space that feels like home, loulou. Your presence alone makes me calm and peaceful, cuz I can talk to you, sharing my thoughts with you, venting on yu, or just asking for kisses and hugs whenever I\'m tired and overwhelming.'
+      },
+      'reason4': {
+        title: 'Sweetest Person',
+        content: 'Your kindness radiates from you. Whether it\'s how you treat others or remember small details about people, you have this natural sweetness that makes everyone love you, sayang. I truly admire you for this.'
+      },
+      'reason5': {
+        title: 'Non-judgmental Listening',
+        content: 'You have this gift of listening with your whole heart. When I talk to you, I know I\'m being heard without preconceptions. And how your responds always validating my feelings first, it always makes me grateful to meet you sayang.'
+      },
+      'reason6': {
+        title: 'Care for Surroundings',
+        content: 'The way you notice and care about people and things around you really make me adore you more. Whether it\'s checking on a friend or being environmentally conscious, you make the whole group chat better through small, thoughtful actions of yours sayang..'
+      },
+      'reason7': {
+        title: 'Joy You Bring',
+        content: 'You have this innate ability to lift the mood wherever you go. Being around you feels like basking in sunlight. Wherever you are, you can always bring the joys for others, makes you even more shine and bright in my eyes and so again I adore you even more'
+      },
+      'reason8': {
+        title: 'Make Me Blush',
+        content: 'The fact that you can still make me blush after all this time speaks volumes. You awaken this boyish giddiness in me that I didn\'t know I still had. Maybe I rarely said that Im blushing but I often got blushing in our conversation. I just didnt tell you cuz no way.'
+      },
+      'reason9': {
+        title: 'Dedicated Person',
+        content: 'When you commit to something or someone, you give your all. That dedication to your studies, your relationships, your principles is incredibly admirable and attractive for me sayang. Esp this past days when you focused on your thesis defense, tbh that make me see another side of you and make me fall even deeper.'
+      }
+    };
+    
+    // Create falling love elements
+    function createFallingLove() {
+      const bg = document.getElementById('loveBackground');
+      const loveTypes = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '💖', '💗', '💘', '💝'];
+      
+      for (let i = 0; i < 15; i++) {
+        const love = document.createElement('div');
+        love.className = 'falling-love';
+        love.innerHTML = loveTypes[Math.floor(Math.random() * loveTypes.length)];
+        love.style.left = Math.random() * 100 + 'vw';
+        love.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        love.style.animationDelay = Math.random() * 3 + 's';
+        love.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        bg.appendChild(love);
+      }
     }
-
-    function showQuestion() {
-      const q = quiz[currentQuestion];
-      questionText.textContent = q.q;
-      optionsBox.innerHTML = '';
-      resultBox.textContent = '';
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'option';
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(idx);
-        optionsBox.appendChild(btn);
-      });
+    
+    // Create floating hearts
+    function createFloatingHearts() {
+      const container = document.getElementById('floatingHearts');
+      const colors = ['#ff6b8b', '#ff8e9e', '#ffb3b3', '#ffd1dc', '#ff9eb5'];
+      
+      for (let i = 0; i < 10; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.top = Math.random() * 100 + 'vh';
+        heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        heart.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        const before = heart.querySelector(':before');
+        const after = heart.querySelector(':after');
+        if (before) before.style.backgroundColor = heart.style.backgroundColor;
+        if (after) after.style.backgroundColor = heart.style.backgroundColor;
+        
+        container.appendChild(heart);
+      }
     }
-
-    function checkAnswer(index) {
-      const q = quiz[currentQuestion];
-      if (index === q.correct) {
-        resultBox.textContent = '🌟 Correct, sweetheart!';
-        currentQuestion++;
-        if (currentQuestion < quiz.length) {
-          setTimeout(showQuestion, 1000);
-        } else {
-          resultBox.textContent = '🌻 You finished the quiz, Anna! Good job, mas so proud of you 🌻';
-          quizFinished = true;
+    
+    // Create sparkle effect
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = x + 'px';
+      sparkle.style.top = y + 'px';
+      sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(sparkle);
+      
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1000);
+    }
+    
+    // Change page function with flip animation
+    function goToPage(pageNum) {
+      if (pageNum < 1 || pageNum > totalPages || isFlipping) return;
+      
+      isFlipping = true;
+      
+      // Play page turn sound
+      pageSound.currentTime = 0;
+      pageSound.play();
+      
+      // Play heartbeat on last page
+      if (pageNum === totalPages) {
+        heartSound.currentTime = 0;
+        heartSound.play();
+      }
+      
+      const currentPageElement = document.querySelector(`#page${currentPage}`);
+      const nextPageElement = document.querySelector(`#page${pageNum}`);
+      
+      // Add to navigation history
+      navigationHistory.push(currentPage);
+      
+      // Start flip animation
+      currentPageElement.classList.remove('active');
+      currentPageElement.classList.add('flipping');
+      
+      setTimeout(() => {
+        currentPageElement.classList.remove('flipping');
+        currentPageElement.style.display = 'none';
+        
+        nextPageElement.style.display = 'block';
+        nextPageElement.classList.add('active');
+        
+        previousPage = currentPage;
+        currentPage = pageNum;
+        isFlipping = false;
+        
+        // Update navigation buttons
+        document.getElementById('prevBtn').disabled = currentPage === 1;
+        document.getElementById('nextBtn').disabled = currentPage === totalPages;
+        
+        // Update progress bar
+        updateProgressBar();
+      }, 1000);
+    }
+    
+    // Go back to previous page with flip animation
+    function goBackToPreviousPage() {
+      if (isFlipping || navigationHistory.length === 0) return;
+      
+      isFlipping = true;
+      
+      const previousPageNum = navigationHistory.pop();
+      const currentPageElement = document.querySelector(`#page${currentPage}`);
+      const previousPageElement = document.querySelector(`#page${previousPageNum}`);
+      
+      // Play page turn sound
+      pageSound.currentTime = 0;
+      pageSound.play();
+      
+      // Start flip out animation
+      currentPageElement.classList.remove('active');
+      currentPageElement.classList.add('flipping-out');
+      
+      setTimeout(() => {
+        currentPageElement.classList.remove('flipping-out');
+        currentPageElement.style.display = 'none';
+        
+        previousPageElement.style.display = 'block';
+        previousPageElement.classList.add('active');
+        
+        currentPage = previousPageNum;
+        isFlipping = false;
+        
+        // Update navigation buttons
+        document.getElementById('prevBtn').disabled = currentPage === 1;
+        document.getElementById('nextBtn').disabled = currentPage === totalPages;
+        
+        // Update progress bar
+        updateProgressBar();
+      }, 1000);
+    }
+    
+    // Update progress bar
+    function updateProgressBar() {
+      const progress = (currentPage - 1) / (totalPages - 1) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+    }
+    
+    // Show detail page
+    function showDetailPage(detailId) {
+      const detail = detailContents[detailId];
+      if (detail) {
+        document.getElementById('detailTitle').textContent = detail.title;
+        document.getElementById('detailText').textContent = detail.content;
+        
+        // Add current page to history before showing detail
+        navigationHistory.push(currentPage);
+        
+        // Hide current page
+        document.querySelector(`#page${currentPage}`).classList.remove('active');
+        
+        // Show detail page
+        document.getElementById('detailPage').classList.add('active');
+        
+        // Disable navigation buttons
+        document.getElementById('prevBtn').disabled = true;
+        document.getElementById('nextBtn').disabled = true;
+        
+        // Create sparkles on detail page
+        for (let i = 0; i < 10; i++) {
           setTimeout(() => {
-            document.getElementById('giftPopup').style.display = 'block';
-          }, 1000);
+            createSparkle(
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerHeight
+            );
+          }, i * 200);
         }
-      } else {
-        resultBox.textContent = 'Oops! Try again, ade 🌼';
       }
     }
-
-    function showGift() {
-      if (quizFinished) {
-        document.getElementById('giftPopup').style.display = 'block';
+    
+    // Go back from detail page
+    function goBack() {
+      // Get the previous page from history
+      const prevPage = navigationHistory.pop();
+      
+      // Hide detail page
+      document.getElementById('detailPage').classList.remove('active');
+      
+      // Show previous page
+      document.querySelector(`#page${prevPage}`).classList.add('active');
+      
+      // Re-enable navigation buttons
+      document.getElementById('prevBtn').disabled = prevPage === 1;
+      document.getElementById('nextBtn').disabled = prevPage === totalPages;
+      
+      currentPage = prevPage;
+    }
+    
+    // Zoom photo function
+    function zoomPhoto(photoUrl) {
+      document.getElementById('zoomedPhoto').src = photoUrl;
+      document.getElementById('photoModal').classList.add('active');
+      
+      // Prevent scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Close photo modal
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('photoModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    });
+    
+    // Close modal when clicking outside
+    document.getElementById('photoModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        document.getElementById('photoModal').classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    });
+    
+    // Navigation controls
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (currentPage > 1) {
+        goBackToPreviousPage();
+      }
+    });
+    
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        goToPage(currentPage + 1);
+      }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && currentPage > 1) {
+        goBackToPreviousPage();
+      } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+        goToPage(currentPage + 1);
+      } else if (e.key === 'Escape') {
+        if (document.getElementById('photoModal').classList.contains('active')) {
+          document.getElementById('photoModal').classList.remove('active');
+          document.body.style.overflow = 'auto';
+        }
+      }
+    });
+    
+    // Music control with autoplay attempt
+    document.addEventListener('DOMContentLoaded', () => {
+      // Try to autoplay music immediately
+      const playPromise = bgMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isMusicPlaying = true;
+          document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
+        }).catch(error => {
+          // If autoplay fails, set up interaction-based play
+          document.addEventListener('click', () => {
+            bgMusic.play()
+              .then(() => {
+                isMusicPlaying = true;
+                document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
+              })
+              .catch(e => console.log("Still blocked"));
+          }, { once: true });
+        });
+      }
+      
+      // Initialize book animation
+      document.getElementById('bookContainer').style.animation = 'bookOpen 1s ease-out forwards';
+    });
+    
+    // Music toggle button
+    document.getElementById('musicToggle').addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play()
+          .then(() => {
+            isMusicPlaying = true;
+            document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
+          });
       } else {
-        alert('Finish the quiz first to unlock the gift, ok sayang? 💝');
+        bgMusic.pause();
+        isMusicPlaying = false;
+        document.getElementById('musicToggle').innerHTML = '<i class="fas fa-volume-mute"></i>';
+      }
+    });
+    
+    // Next track button
+    document.getElementById('nextTrack').addEventListener('click', () => {
+      currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
+      bgMusic.src = musicPlaylist[currentTrackIndex];
+      
+      if (isMusicPlaying) {
+        bgMusic.play()
+          .then(() => {
+            document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
+          });
+      }
+    });
+    
+    // Confetti effect for proposal acceptance
+    document.getElementById('acceptProposal').addEventListener('click', (e) => {
+      e.preventDefault();
+      createConfetti();
+      setTimeout(() => {
+        window.location.href = 'https://t.me/enforczer';
+      }, 2000);
+    });
+    
+    function createConfetti() {
+      const colors = ['#b3577a', '#d67093', '#c7798a', '#e8c3ca', '#f5c6d3', '#f8e1e7'];
+      
+      for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = (Math.random() * 15 + 5) + 'px';
+        confetti.style.height = (Math.random() * 15 + 5) + 'px';
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
       }
     }
+    
+    // Sparkle effect on click
+    document.addEventListener('click', (e) => {
+      createSparkle(e.clientX, e.clientY);
+    });
+    
+    // Initialize on load
+    window.addEventListener('load', () => {
+      createFallingLove();
+      createFloatingHearts();
+      
+      // Try to autoplay music again in case DOMContentLoaded was too early
+      const playPromise = bgMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isMusicPlaying = true;
+          document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
+        }).catch(error => {
+          document.getElementById('musicToggle').innerHTML = '<i class="fas fa-volume-mute"></i>';
+        });
+      }
+      
+      // Initialize progress bar
+      updateProgressBar();
+    });
   </script>
 </body>
 </html>
